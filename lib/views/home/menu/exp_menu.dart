@@ -3,6 +3,7 @@ import 'package:chizitech/utils/navigator.dart';
 import 'package:chizitech/utils/spring_button.dart';
 import 'package:chizitech/utils/theme.dart';
 import 'package:chizitech/views/home/coming_soon.dart';
+import 'package:chizitech/views/home/desktop/desktop.dart';
 import 'package:chizitech/views/home/home_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -63,7 +64,7 @@ class EXPMenu extends HookWidget {
                 const YMargin(30),
                 SpringButton(
                   onTap: () {
-                    navigate(context, ComingSoon(), isDialog: true);
+                    navigate(context, Desktop(), isDialog: true);
                   },
                   useCache: false,
                   child: Text(

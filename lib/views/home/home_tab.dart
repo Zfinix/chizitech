@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:chizitech/core/viewmodels/home_vm.dart';
 import 'package:chizitech/utils/margin.dart';
 import 'package:chizitech/utils/navigator.dart';
 import 'package:chizitech/utils/spring_button.dart';
@@ -211,24 +210,3 @@ class SubButton extends StatelessWidget {
 }
 
 
-class MenuItem extends HookWidget {
-  final Function onPressed;
-  final String text;
-
-  MenuItem(this.text, {this.onPressed});
-  @override
-  Widget build(BuildContext context) {
-    final prov = useProvider(providerMain);
-    return FlatButton(
-      onPressed: onPressed,
-      child: Text(
-        text ?? '',
-        style: GoogleFonts.montserrat(
-            fontSize: 8.5,
-            color: textColor(prov.isDark),
-            fontWeight: FontWeight.w500,
-            letterSpacing: 1.2),
-      ),
-    ) /* .showCursorOnHover */;
-  }
-}

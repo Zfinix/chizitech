@@ -55,3 +55,4 @@ flutter:
 
   assets:
    - assets/images/
+   - db/db.json

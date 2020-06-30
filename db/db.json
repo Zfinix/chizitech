@@ -1,0 +1,28 @@
+{
+    "desktop": [
+        {
+            "title": "Chizi.tech Desktop",
+            "desc": "Desktop Application for this website",
+            "github": "https://github.com/Zfinix/chizitech",
+            "img": "chizi.tech.png"
+        },
+        {
+            "title": "Netflix Demo",
+            "desc": " A desktop implementation for netflix",
+            "github": "https://github.com/Zfinix/flutter-desktop-examples",
+            "img": "nfx.png"
+        },
+        {
+            "title": "PS5 Demo",
+            "desc": "Concept Application for PS5 Console",
+            "github": "https://github.com/Zfinix/flutter-desktop-examples",
+            "img": "ps5.png"
+        },
+        {
+            "title": "API Post Client in flutter",
+            "desc": "A REST Api client built with Flutter",
+            "github": "https://github.com/Zfinix/flutter-desktop-examples",
+            "img": "fpost.png"
+        }
+    ]
+}
