@@ -2,22 +2,28 @@ import 'dart:convert';
 
 import 'package:chizitech/core/models/desktop_model.dart';
 import 'package:chizitech/utils/url.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class DB {
-  static Future<DataModel> get(context) async {
+  static final dio = Dio(
+    BaseOptions(
+      responseType: ResponseType.plain,
+    ),
+  );
+
+  static Future<DataModel?> get(context) async {
     try {
       var headers = {
         'Content-type': 'application/json;charset=UTF-8',
         'Accept': 'application/json;charset=UTF-8',
       };
 
-      var response = await http.get(APIUrl.db, headers: headers);
-      print(response.body);
-      if (response.body != null && response.statusCode == 200) {
-        return DataModel.fromJson(json.decode(response.body));
+      var response =
+          await dio.get(APIUrl.db, options: Options(headers: headers));
+      print(response.data);
+      if (response.data != null && response.statusCode == 200) {
+        return DataModel.fromJson(json.decode(response.data));
       } else {
         showCupertinoDialog(
             builder: (BuildContext context) {

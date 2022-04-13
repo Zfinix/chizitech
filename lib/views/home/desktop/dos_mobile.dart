@@ -1,42 +1,43 @@
-import 'package:chizitech/core/models/desktop_model.dart';
 import 'package:chizitech/utils/margin.dart';
-import 'package:chizitech/utils/navigator.dart';
-import 'package:chizitech/utils/spring_button.dart';
-import 'package:chizitech/utils/theme.dart';
-import 'package:chizitech/utils/url.dart';
-import 'package:chizitech/views/home/home_web.dart';
+import 'package:chizitech/widgets/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../home_phone.dart';
+import 'package:chizitech/core/models/desktop_model.dart';
+import 'package:chizitech/utils/navigator.dart';
+import 'package:chizitech/utils/spring_button.dart';
+import 'package:chizitech/utils/theme.dart';
+import 'package:chizitech/utils/url.dart';
+import 'package:chizitech/views/home/home_phone.dart';
+import 'package:chizitech/views/home/home_web.dart';
 
-class DosMobile extends StatefulHookWidget {
+class DosMobile extends StatefulHookConsumerWidget {
   @override
   _DosMobileState createState() => _DosMobileState();
 }
 
-class _DosMobileState extends State<DosMobile> {
+class _DosMobileState extends ConsumerState<DosMobile> {
   @override
   void initState() {
-    providerMain.read(context).loadDataFromDB(context);
+    ref.read(mainVM).loadDataFromDB();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final prov = useProvider(providerMain);
+    final viewModel = ref.watch(mainVM);
     return Scaffold(
-      backgroundColor: bgColor(prov.isDark),
+      backgroundColor: bgColor(viewModel.isDark),
       body: Column(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const YMargin(30),
+              const Gap(30),
               GestureDetector(
                 onTap: () => popView(context),
                 child: Hero(
@@ -53,17 +54,16 @@ class _DosMobileState extends State<DosMobile> {
                   ),
                 ),
               ),
-              const YMargin(30),
+              const Gap(30),
               MobileMenu(),
-              const YMargin(10),
+              const Gap(10),
             ],
           ),
           Expanded(
             child: ListView(
               children: [
-                if (prov.dataModel != null)
-                  for (var item in prov.dataModel.desktop) DosItem(item),
-                const YMargin(30),
+                for (var item in viewModel.dataModel.desktop) DosItem(item),
+                const Gap(30),
               ],
             ),
           ),
@@ -73,13 +73,13 @@ class _DosMobileState extends State<DosMobile> {
   }
 }
 
-class DosItem extends HookWidget {
+class DosItem extends HookConsumerWidget {
   DosItem(this.data);
   final DesktopModel data;
 
   @override
-  Widget build(BuildContext context) {
-    final prov = useProvider(providerMain);
+  Widget build(BuildContext context, ref) {
+    final viewModel = ref.watch(mainVM);
     return SpringButton(
       onTap: () {},
       useCache: false,
@@ -99,16 +99,18 @@ class DosItem extends HookWidget {
                       height: context.screenHeight(0.26),
                       width: context.screenWidth(0.87),
                       decoration: BoxDecoration(
-                        color: buttonColor(prov.isDark),
+                        color: buttonColor(viewModel.isDark),
                         borderRadius: BorderRadius.circular(4),
-                        border: prov.isDark
-                            ? Border.all(color: bgColor(prov.isDark), width: 1)
+                        border: viewModel.isDark
+                            ? Border.all(
+                                color: bgColor(viewModel.isDark), width: 1)
                             : null,
                         boxShadow: [
                           BoxShadow(
-                            color:
-                                (prov.isDark ? Colors.grey : Colors.grey[900])
-                                    .withOpacity(.2),
+                            color: (viewModel.isDark
+                                    ? Colors.grey
+                                    : Colors.grey[900])!
+                                .withOpacity(.2),
                             blurRadius: 10,
                           )
                         ],
@@ -123,22 +125,19 @@ class DosItem extends HookWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              height: 39,
-                              width: 39,
-                              child: FlatButton(
-                                padding: EdgeInsets.all(5),
-                                color: prov.isDark ? accent(true) : white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(3)),
-                                onPressed: () => launch(Uri.parse(prov
+                              padding: EdgeInsets.all(5),
+                              child: TouchableOpacity(
+                                onTap: () => launch(Uri.parse(viewModel
                                             .dataModel
-                                            .desktop[prov.selectedIndex]
-                                            ?.github ??
+                                            .desktop[viewModel.selectedIndex]
+                                            .github ??
                                         'https://github.com/zfinix')
                                     .toString()),
-                                child: Icon(FeatherIcons.github,
-                                    size: 14,
-                                    color: buttonTextColor(prov.isDark)),
+                                child: Icon(
+                                  FeatherIcons.github,
+                                  size: 14,
+                                  color: buttonTextColor(viewModel.isDark),
+                                ),
                               ),
                             ),
                           ],
@@ -146,24 +145,24 @@ class DosItem extends HookWidget {
                       ),
                     ),
                   ),
-                  const YMargin(20),
+                  const Gap(20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data?.title ?? '',
+                      Text(data.title,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.raleway(
                               fontSize: 18,
-                              color: textColor(prov.isDark),
+                              color: textColor(viewModel.isDark),
                               fontWeight: FontWeight.w800,
                               letterSpacing: 0.2)),
-                      YMargin(6),
+                      Gap(6),
                       Text(
-                        data?.desc ?? '',
+                        data.desc,
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.raleway(
                             fontSize: 11,
-                            color: textColor(prov.isDark).withOpacity(0.3),
+                            color: textColor(viewModel.isDark).withOpacity(0.3),
                             fontWeight: FontWeight.w300,
                             letterSpacing: 0.9),
                       ),

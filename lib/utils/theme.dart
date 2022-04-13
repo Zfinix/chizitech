@@ -4,12 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 const Color primary = Color(0XFF2C54D8);
 
 Color accent([bool isDark = false]) =>
-    isDark ? Color(0xffD4A925) : Color(0xffFF2E2E);
+    isDark ? Color(0xFF00A86D) : Color.fromARGB(255, 173, 3, 65);
 
 const Color alt = Color(0xffE4B36B);
 
 Color bgColor([bool isDark = false]) =>
-    isDark ? Color(0xff24262C) : Color(0xffF6F6F6);
+    isDark ? Color.fromARGB(255, 3, 34, 29) : Color(0xffF6F6F6);
 
 const Color red = Color(0xFFD82C68);
 
@@ -20,10 +20,9 @@ const Color black = Colors.black;
 Color textColor([bool isDark = false]) => isDark ? white : black;
 
 Color buttonColor([bool isDark = false]) =>
-    isDark ? accent(isDark) : Color(0xffFF2E2E).withOpacity(0.05);
+    isDark ? accent(isDark) : Color(0xFF00A86D);
 
-Color buttonTextColor([bool isDark = false]) =>
-    isDark ? white: accent();
+Color buttonTextColor([bool isDark = false]) => isDark ? white : accent();
 
 const Color grey = Colors.grey;
 

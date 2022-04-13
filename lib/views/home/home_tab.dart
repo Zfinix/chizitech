@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:chizitech/utils/margin.dart';
+import 'package:chizitech/widgets/button.dart';
+import 'package:gap/gap.dart';
 import 'package:chizitech/utils/navigator.dart';
 import 'package:chizitech/utils/spring_button.dart';
 import 'package:chizitech/utils/theme.dart';
@@ -7,36 +8,35 @@ import 'package:chizitech/views/home/home_web.dart';
 import 'package:chizitech/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:chizitech/utils/margin.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'menu/exp_menu.dart';
 
-class HomeTab extends StatefulHookWidget {
-  HomeTab({Key key}) : super(key: key);
+class HomeTab extends StatefulHookConsumerWidget {
+  HomeTab({Key? key}) : super(key: key);
 
   @override
   _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends ConsumerState<HomeTab> {
   @override
   Widget build(BuildContext context) {
-    final prov = useProvider(providerMain);
+    final viewModel = ref.watch(mainVM);
     return Container(
       height: context.screenHeight(),
       width: context.screenWidth(),
-      color: bgColor(prov.isDark),
+      color: bgColor(viewModel.isDark),
       child: Padding(
         padding: const EdgeInsets.only(top: 30),
         child: Material(
           color: Colors.transparent,
           child: Row(
             children: [
-              XMargin(context.screenWidth(0.15)),
+              Gap(context.screenWidth(0.15)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -44,13 +44,14 @@ class _HomeTabState extends State<HomeTab> {
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       'chizi.tech',
-                      style: GoogleFonts.montserrat(
-                          fontSize: 17,
-                          color: textColor(prov.isDark),
-                          fontWeight: FontWeight.w600),
+                      style: GoogleFonts.raleway(
+                        fontSize: 18,
+                        color: textColor(viewModel.isDark),
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
-                  const YMargin(20),
+                  const Gap(20),
                   Menu(),
                   Spacer(),
                   Container(
@@ -58,7 +59,7 @@ class _HomeTabState extends State<HomeTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const YMargin(20),
+                        const Gap(20),
                         ConstrainedBox(
                           constraints: BoxConstraints(
                             minWidth: 200.0,
@@ -68,9 +69,9 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           child: AutoSizeText(
                             'Hi,\nI’m Chiziaruhoma',
-                            style: GoogleFonts.montserrat(
-                                fontSize: 40,
-                                color: textColor(prov.isDark),
+                            style: GoogleFonts.raleway(
+                                fontSize: 45,
+                                color: textColor(viewModel.isDark),
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 1.2),
                           ),
@@ -78,17 +79,18 @@ class _HomeTabState extends State<HomeTab> {
                       ],
                     ),
                   ),
-                  const YMargin(50),
+                  const Gap(50),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         width: context.screenWidth(0.38),
                         child: Text(
-                          'I design and build beautiful mobile and desktop experiences for fun.',
-                          style: GoogleFonts.lato(
+                          'Poised, professional, and product-oriented Mobile Engineer with 5+ years of experience working in a variety of fast-paced, dynamic, and ever-changing settings. Experience includes working with and leading teams in building and designing beautiful User Interfaces',
+                          style: GoogleFonts.raleway(
                               fontSize: 14,
-                              color: textColor(prov.isDark).withOpacity(0.7),
+                              color:
+                                  textColor(viewModel.isDark).withOpacity(0.7),
                               fontWeight: FontWeight.w300,
                               height: 2,
                               letterSpacing: 1.1),
@@ -96,32 +98,18 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ],
                   ),
-                  const YMargin(20),
+                  const Gap(20),
                   SubMenu(),
-                  const YMargin(70),
-                  Container(
-                    height: 39,
-                    child: FlatButton(
-                      color: buttonColor(prov.isDark),
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0)),
-                      onPressed: () =>
-                          navigate(context, EXPMenu(), isDialog: true),
-                      child: Text(
-                        'EXPLORE    >',
-                        style: GoogleFonts.montserrat(
-                            fontSize: 8,
-                            letterSpacing: 1,
-                            color: buttonTextColor(prov.isDark),
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
+                  const Gap(70),
+                  ChiziButton(
+                    color: buttonColor(viewModel.isDark),
+                    onTap: () => navigate(context, EXPMenu(), isDialog: true),
+                    text: 'Explore',
                   ),
                   Spacer(),
                 ],
               ),
-              XMargin(context.screenWidth(0.02)),
+              Gap(context.screenWidth(0.02)),
               Hero(
                 tag: 'avatar',
                 child: Container(
@@ -143,10 +131,10 @@ class _HomeTabState extends State<HomeTab> {
   }
 }
 
-class SubMenu extends HookWidget {
+class SubMenu extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final prov = useProvider(providerMain);
+  Widget build(BuildContext context, ref) {
+    final viewModel = ref.watch(mainVM);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -154,34 +142,34 @@ class SubMenu extends HookWidget {
           'https://github.com/zfinix',
           icon: Icon(
             FeatherIcons.github,
-            color: textColor(prov.isDark).withOpacity(0.7),
+            color: textColor(viewModel.isDark).withOpacity(0.7),
             size: 14,
           ),
         ),
-        const XMargin(25),
+        const Gap(25),
         SubButton(
           'https://dribbble.com/chiziaruhoma',
           icon: Icon(
             LineIcons.dribbble,
-            color: textColor(prov.isDark).withOpacity(0.7),
+            color: textColor(viewModel.isDark).withOpacity(0.7),
             size: 20,
           ),
         ),
-        const XMargin(25),
+        const Gap(25),
         SubButton(
-          'https://twitter.com/zfinix1',
+          'https://twitter.com/chiziaruhoma',
           icon: Icon(
             LineIcons.twitter,
-            color: textColor(prov.isDark).withOpacity(0.7),
+            color: textColor(viewModel.isDark).withOpacity(0.7),
             size: 20,
           ),
         ),
-        const XMargin(25),
+        const Gap(25),
         SubButton(
           'https://linkedin.com/in/chiziaruhoma',
           icon: Icon(
             FeatherIcons.linkedin,
-            color: textColor(prov.isDark).withOpacity(0.7),
+            color: textColor(viewModel.isDark).withOpacity(0.7),
             size: 14,
           ),
         ),
@@ -192,21 +180,18 @@ class SubMenu extends HookWidget {
 
 class SubButton extends StatelessWidget {
   final String url;
-  final Icon icon;
+  final Icon? icon;
 
   SubButton(this.url, {this.icon});
 
   @override
   Widget build(BuildContext context) {
-  
     return SpringButton(
       useCache: false,
-      child: icon ?? Container(),
+      child: icon ?? const Offstage(),
       onTap: () async {
         await launch(Uri.parse(url).toString());
       },
     );
   }
 }
-
-

@@ -5,7 +5,7 @@ class HomeVM extends ChangeNotifier {
   final controller = PageController(viewportFraction: 0.3);
   final controllerTab = PageController(viewportFraction: 0.5);
 
-  DataModel _dataModel;
+  DataModel _dataModel = DataModel(desktop: []);
   DataModel get dataModel => _dataModel;
 
   bool _isDark = false;
@@ -37,9 +37,8 @@ class HomeVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  void loadDataFromDB(context) async {
+  void loadDataFromDB() async {
     _dataModel = await DataModel.initialize();
-
     notifyListeners();
   }
 
@@ -53,8 +52,7 @@ class HomeVM extends ChangeNotifier {
   }
 
   void nextDos({isTab: false}) async {
-    if (_dataModel != null &&
-        _dataModel.desktop.length > 0 &&
+    if (_dataModel.desktop.length > 0 &&
         _selectedIndex < _dataModel.desktop.length)
       await (isTab ? controllerTab : controller).animateToPage(
         _selectedIndex + 1,
